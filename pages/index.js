@@ -19,7 +19,10 @@ function ListData() {
   const setStateError = ListItemState.setStateError();
 
   useEffect(() => {
-    getListData();
+    
+    if (state === State.Initial) {
+      getListData();
+    }
   }, [])
 
   const handleReload = () => getListData();
@@ -48,7 +51,7 @@ function ListData() {
         <div className='text-white'>List Item</div>
         <button onClick={() => handleReload()} className='bg-white p-2'>Reload</button>
       </div>
-      <button onClick={() => setStateError("Error is happening")} className='bg-white p-2'>Set Error</button>
+      <button onClick={() => setStateError("Error is happening")} className='text-gray-900 bg-white p-2'>Set Error</button>
       <div>
         {handleState()}
       </div>
@@ -63,26 +66,36 @@ function Home() {
   const user = useGetUser();
   const setUser = useSetUser();
 
+  const setCurrentPerson = ListItemState.useSetCurrentPerson();
+  const currentPerson = ListItemState.useCurrentPerson();
+
   useEffect(() => {
-    console.log("re-rendered");
+    
     let isDark = localStorage.getItem("is_dark");
-    if (isDark === true) {
+    console.log("theme "+isDark);
+    console.log("user "+user);
+    if (isDark === "true") {
+      console.log("dark will be implemented");
       document.documentElement.classList.add('dark')
     } else {
       document.documentElement.classList.remove('dark')
     }
   }, )
 
+  const handleClick = () => {
+    setCurrentPerson(document.getElementById("input-name").value)
+  }
+  
   return (
     <div className='bg-gray-100 dark:bg-gray-900 h-screen'>
       <div className='container'>
         <div className='text-gray-900 dark:text-white'>
-          Hello, welcome {user}
+          Hello, welcome {currentPerson}
         </div>
         <div className='rounded-md bg-gray-800 drop-shadow-[0_5px_15px_rgba(100,100,100,0.25)] p-5'>
           <div className='text-white '>Login Section</div>
           <input id='input-name'></input>
-          <button className='bg-gray-900 text-white' onClick={() => setUser(document.getElementById("input-name").value)}>Set User</button>
+          <button className='bg-gray-900 text-white' onClick={() => handleClick()}>Set User</button>
         </div>
         <Link href={"/setting/setting"}>Go to Setting</Link>
         <ListData />

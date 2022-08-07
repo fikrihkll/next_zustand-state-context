@@ -6,6 +6,8 @@ const useListItem = create((set) => ({
     state: State.Initial,
     listData: [],
     message: "",
+    currentPerson: "",
+    setNewPerson: (name) => set((state) => ({currentPerson: name})), 
     getListData: () => handleGetListData(set),
     setStateError: (msg) => set((state) => ({state: State.Error, message: msg}))
 }));
@@ -38,5 +40,7 @@ export const ListItemState = {
     listData: () =>  useListItem((state) => state.listData),
     message: () => useListItem((state) => state.message),
     getListData: () => useListItem((state) => state.getListData),
-    setStateError: () => useListItem((state) => state.setStateError)
+    setStateError: () => useListItem((state) => state.setStateError),
+    useCurrentPerson: () => useListItem((state) => state.currentPerson),
+    useSetCurrentPerson: () => useListItem((state) => state.setNewPerson),
 };
